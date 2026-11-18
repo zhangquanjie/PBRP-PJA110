@@ -11,9 +11,7 @@ PRODUCT_BUILD_RECOVERY_IMAGE := true
 PRODUCT_PACKAGES += \
     fastbootd \
     android.hardware.fastboot-service.example_recovery \
-    lpflash \
-    lpmake \
-    lpunpack
+    lpflash
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/recovery.fstab \
