@@ -1,0 +1,15 @@
+on init
+    setprop ro.recovery.device pja110
+    setprop ro.recovery.vendor_boot.required 1
+    stop recovery
+    start pja110_drm
+
+service pja110_drm /system/bin/pja110_drm.sh
+    class core
+    user root
+    group root
+    disabled
+    oneshot
+
+on property:sys.boot_completed=1
+    chmod 0666 /sys/class/backlight/panel0-backlight/brightness
