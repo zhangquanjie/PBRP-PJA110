@@ -4,6 +4,9 @@ BOARD_SHIPPING_API_LEVEL := 33
 PRODUCT_SHIPPING_API_LEVEL := 33
 PRODUCT_TARGET_VNDK_VERSION := 34
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
+# Android 14 otherwise treats TARGET_NO_KERNEL as a reason to skip recovery.
+# PJA110 intentionally builds a ramdisk-only dedicated recovery image.
+PRODUCT_BUILD_RECOVERY_IMAGE := true
 
 PRODUCT_PACKAGES += \
     fastbootd \
