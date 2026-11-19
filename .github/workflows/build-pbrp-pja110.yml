@@ -59,7 +59,9 @@ jobs:
         run: |
           source build/envsetup.sh
           lunch pb_pja110-eng
-          mka pbrp -j4
+          # The PBRP fork does not skip Soong's own Go unit tests by default.
+          # They add several minutes and are unrelated to this device image.
+          mka pbrp --skip-soong-tests -j4
 
       - name: Collect and validate image
         run: |
