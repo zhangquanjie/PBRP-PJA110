@@ -43,6 +43,23 @@ jobs:
           mkdir -p "${{ runner.temp }}/pbrp/device/oneplus/pja110"
           rsync -a --delete --exclude='.git' --exclude='.github' ./ "${{ runner.temp }}/pbrp/device/oneplus/pja110/"
 
+      - name: Fix Android 14 recovery vendor layout
+        working-directory: ${{ runner.temp }}/pbrp
+        run: |
+          # Android 14's generic root owns /vendor as a symlink to /system/vendor.
+          # PBRP still installs a few recovery-only files into a real /vendor,
+          # which makes the final ramdisk rsync fail when it creates that symlink.
+          sed -i \
+            's#$(TARGET_RECOVERY_ROOT_OUT)/vendor#$(TARGET_RECOVERY_ROOT_OUT)/system/vendor#g' \
+            bootable/recovery/etc/Android.mk \
+            bootable/recovery/prebuilt/Android.mk
+          if grep -R '\$(TARGET_RECOVERY_ROOT_OUT)/vendor' \
+              bootable/recovery/etc/Android.mk \
+              bootable/recovery/prebuilt/Android.mk; then
+            echo 'Unpatched recovery /vendor output remains' >&2
+            exit 1
+          fi
+
       - name: Build recovery image
         working-directory: ${{ runner.temp }}/pbrp
         env:
