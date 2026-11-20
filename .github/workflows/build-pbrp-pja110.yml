@@ -64,6 +64,8 @@ jobs:
         working-directory: ${{ runner.temp }}/pbrp
         env:
           ALLOW_MISSING_DEPENDENCIES: "true"
+          BUILD_USERNAME: "pbrp"
+          BUILD_HOSTNAME: "github-actions"
         run: |
           source build/envsetup.sh
           lunch pb_pja110-eng
